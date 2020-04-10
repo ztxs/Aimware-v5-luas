@@ -1,7 +1,15 @@
 local silentname = 0
-local windowmade = 0
-local windowactive = 0
 local origName = ""
+local time = 0
+local timedouble = globals.CurTime()
+local rightname = 1
+local clantagis = ""
+local input = ""
+local inputcc = ""
+local lenght = 0
+local n = 0
+local n1 = 1
+local n2 = 0
 
 local function getOriginalName()
 
@@ -9,9 +17,11 @@ local function getOriginalName()
 
 end
 getOriginalName()
+
 local function setName(name)
   client.SetConVar("name", name);
 end
+
 local boldletters = {
 
 
@@ -21,49 +31,63 @@ local boldletters = {
   "𝟬","𝟭","𝟮","𝟯","𝟰","𝟱","𝟲","𝟳","𝟴","𝟵","'"," "
 }
 
-local window = gui.Window(window, "Clantag Changer", 200, 200, 180, 172)
-local function refresh(x1,y1,x2,y2,active)
-  if windowmade == 0 then
-    local grp1 = gui.Groupbox(window, "Clantag", 0,10,175,130)
-    local clantag =  gui.Editbox( grp1, "Clantag","" )
-    local resetbutton = gui.Button(grp1, "Reset Clantag", function()
+local ccmenu = gui.Tab(gui.Reference("Settings"), "Clantag Changer", "Clantag Changer")
+local menubox = gui.Groupbox(ccmenu, "Fake animated clantag changer by atk3001", 16, 16, 608, 500)
+local c =  gui.Editbox(menubox, "Clantag","")
+local button = gui.Button(menubox, "Set Clantag", function()
+  input = c:GetValue()
+  n = string.len(input)
+  n1 = 1
+  n2 = n + 1
+  inputcc = input .. " " .. input
+  lenght = string.len(input) * 2 + 1
+end)
+local animate = gui.Checkbox(menubox,"Start.animated.clantag", "Start animated clantag", false );
 
-    setName(origName)
-    end)
+local function changename()
+if animate:GetValue() and (entities.GetLocalPlayer() ~= nil and engine.GetServerIP() ~= nil and engine.GetMapName() ~= nil)then
+  curutime = globals.CurTime()
+  if curutime >= timedouble + 1 then
+    timedouble = globals.CurTime()
+    time = time + 1
     local output = ""
-    local button = gui.Button(grp1, "Set Clantag", function()
-    local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' "
+    if n2 <= lenght then
+      clantagis = string.sub(inputcc, n1, n2)
 
-    local input = clantag:GetValue()
+      local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' "
+      for i=1, #clantagis do
+        local char = clantagis:sub(i,i)
+        output = output .. boldletters[letters:find(char)]
+      end
 
-    for i=1, #input do
-      local char = input:sub(i,i)
-      output = output .. boldletters[letters:find(char)]
       setName(output .. " " .. origName)
+      n1 = n1 + 1
+      n2 = n2 + 1
+      output = ""
+      end
+    if n2 > lenght then
+      local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' ."
+      for i=1, #input do
+        local char = input:sub(i,i)
+        output = output .. boldletters[letters:find(char)]
+      end
+
+      setName(output .. "   " .. origName)
+      n1 = 1
+      n2 = n + 1
+      output = ""
     end
-    output = ""
-    end)
-
-    windowmade = 1
   end
+  rightname = 0
+elseif rightname == 0 then
+  setName(origName)
+  rightname = 1
+end
 end
 
-local custom  = gui.Custom( window, "Options", 0, 0, 0, 0, refresh)
-
-local function openwindow()
-  if gui.Reference("MENU"):IsActive() and windowactive == 0 then
-    window:SetActive(1)
-    windowactive = 1
-  elseif not gui.Reference("MENU"):IsActive() and windowactive == 1 then
-    window:SetActive(0)
-    windowactive = 0
-  end
-end
-
-callbacks.Register("Draw", openwindow)
+callbacks.Register("Draw", changename)
 
 local function makenamesilent()
-  if windowmade == 1 then
     local lp = entities.GetLocalPlayer()
     if silentname == 0 and lp ~= nil then
       setName("\n\xAD\xAD\xAD\xAD")
@@ -78,7 +102,8 @@ local function makenamesilent()
     if lp == nil then
       silentname = 0
     end
-  end
 end
 
 callbacks.Register("Draw",makenamesilent)
+Scroll to TopScroll to Bottom
+8

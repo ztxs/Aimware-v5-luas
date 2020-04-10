@@ -29,7 +29,7 @@ local function drawHook()
                     else
                         color(124, 176, 34)
                     end
-                    text(15, screenY-75, "LC")
+                    text(16, screenY-45, "LC")
                     if originRecords[3] ~= nil then
                         table.remove(originRecords, 1)
                     end

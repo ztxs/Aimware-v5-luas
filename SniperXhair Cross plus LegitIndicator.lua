@@ -12,7 +12,6 @@ if (client.GetLocalPlayerIndex() == client.GetPlayerIndexByUserID(Event:GetInt('
             drawCrosshair = true
     else										--if Event:GetString('item') ~= "awp" and Event:GetString('item') ~= "ssg08" and Event:GetString('item') ~= "scar20" and Event:GetString('item') ~= "g3sg1" then
             drawCrosshair = false
-            return;
        end end end end
 
 
@@ -28,11 +27,11 @@ local screenCenterX, screenY = draw.GetScreenSize(); scX = screenCenterX / 2; sc
 		draw.Color(255, 0, 0, 255)
         draw.Line(scX, scY - 8, scX, scY + 8);  --line down
         draw.Line(scX - 8, scY, scX + 8, scY); --line across
-
-	if drawCrosshair == false then
+	end
+	elseif drawCrosshair == false then
 --HERE--
 return
-end end end end  
+end end
 
 client.AllowListener('item_equip');
 callbacks.Register("FireGameEvent", "if on sniper", on_sniper); 

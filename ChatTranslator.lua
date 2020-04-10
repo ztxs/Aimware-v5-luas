@@ -62,7 +62,7 @@ end
 function drawEventHandler()
 draw.SetFont(ERROR_FONT);
    if (update_available and not update_downloaded) then
-       if (gui.GetValue("lua_allow_cfg") == false) then
+       
            draw.Color(255, 0, 0, 255);
            draw.Text(0, 0, "[TRANSLATOR] An update is available, please enable Lua Allow Config and Lua Editing in the settings tab");
        else
@@ -82,7 +82,6 @@ draw.SetFont(ERROR_FONT);
    end
 
    if (not version_check_done) then
-       if (gui.GetValue("lua_allow_http") == false) then
            draw.Color(255, 0, 0, 255);
            draw.Text(0, 0, "[TRANSLATOR] Please enable Lua HTTP Connections in your settings tab to use this script");
            return;
@@ -93,7 +92,6 @@ draw.SetFont(ERROR_FONT);
        if (version ~= VERSION_NUMBER) then
            update_available = true;
        end
-   end
 
     if (last_output_read ~= nil and last_output_read > globals.TickCount()) then
         last_output_read = globals.TickCount();
@@ -104,7 +102,6 @@ draw.SetFont(ERROR_FONT);
     end
 
     drawTranslations();
-end
 
 function drawTranslations()
     draw.SetFont(MAIN_FONT);

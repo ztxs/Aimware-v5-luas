@@ -1,9 +1,11 @@
 callbacks.Register("Draw", function()
+	if entities.GetLocalPlayer() then
 local hc = gui.GetValue("rbot.accuracy.weapon.asniper.hitchance")    
 local mindmg = gui.GetValue("rbot.accuracy.weapon.asniper.mindmg")   
-
-
-    draw.SetFont(draw.CreateFont("Tahoma", 20, 700))
+local button_held = input.IsButtonDown
+local fakewalkkey = gui.GetValue("rbot.accuracy.movement.fakewalkkey")
+    
+		draw.SetFont(draw.CreateFont("Tahoma", 20, 700))
 
     if (gui.GetValue("rbot.hitscan.mode.asniper.baimlethal") == true) then
         draw.Color(0,128,0,255)
@@ -43,6 +45,13 @@ local mindmg = gui.GetValue("rbot.accuracy.weapon.asniper.mindmg")
 		draw.TextShadow(88, 866, ''..mindmg )
 	end
 
-	
+	if button_held(fakewalkkey) == true then --input.IsButtonDown( fakewalkkey ) == true then
+        draw.Color(0,128,0,255)
+		draw.TextShadow(16, 886, "Fakewalking" )
+	else
+	    draw.Color(128,0,0,255)
+		draw.TextShadow(16, 886, "Fakewalking" )
+	end
+end
 
 end)

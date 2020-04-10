@@ -27,7 +27,8 @@ local scoutmindmg = guiGet("rbot.accuracy.weapon.scout.mindmg")
 local automindmg = guiGet("rbot.accuracy.weapon.asniper.mindmg")
 
 
-function changeMinDamage()
+local function changeMinDamage()
+if entities.GetLocalPlayer() then
 if awpCheck:GetValue() then
     awp1 = awpDamage:GetValue()
     else
@@ -77,87 +78,103 @@ Toggle = Toggle *-1
         guiSet("rbot.accuracy.weapon.asniper.mindmg", autoori:GetValue())
         guiSet("rbot.accuracy.weapon.sniper.mindmg", awpori:GetValue())
         guiSet("rbot.accuracy.weapon.scout.mindmg", scoutori:GetValue())
+end
     end
 end
 
-function Drawtext()
+local function Drawtext()
     w, h = draw.GetScreenSize()
 if (setDmg:GetValue()==1) then
     if Toggle == 1 then
         draw.Color(0, 255, 0, 255);
-    	draw.Text(18, h - 447, "Min Damage Mode On");
-        if awpCheck:GetValue() then
-        draw.Color(255, 255, 0, 255);
-        draw.Text(18, h - 430, "Awp MinDmg On:")
-        else
-        end
-        if scoutCheck:GetValue() then
-        draw.Color(255, 255, 0, 255);
-        draw.Text(18, h - 413, "Scout MinDmg On:") 
-        else
-        end
+    	draw.Text(18, h - 447, "Min Damage Mode: Toggled");
         if autoCheck:GetValue() then
         draw.Color(255, 255, 0, 255);
-        draw.Text(18, h - 396, "Auto MinDmg On: ")
+		draw.Text(18, h - 396, "Auto MinDmg: On")        
+		draw.Text(18, h - 413, "Scout MinDmg: Off")
+		draw.Text(18, h - 430, "Awp MinDmg: Off")
+        else
+        end        
+        if scoutCheck:GetValue() then
+        draw.Color(255, 255, 0, 255);
+		draw.Text(18, h - 396, "Auto MinDmg: Off")        
+		draw.Text(18, h - 413, "Scout MinDmg: On")
+		draw.Text(18, h - 430, "Awp MinDmg: Off")
         else
         end
+		if awpCheck:GetValue() then
+        draw.Color(255, 255, 0, 255);
+		draw.Text(18, h - 396, "Auto MinDmg: Off")
+		draw.Text(18, h - 413, "Scout MinDmg: Off")
+        draw.Text(18, h - 430, "Awp MinDmg: On")
+        else
+        end
+
    	 elseif Toggle == -1 then
         draw.Color(255, 0, 0, 255);
-    	draw.Text(18, h - 447, "Min Damage Mode Off");
-		draw.Text(18, h - 430, "Awp MinDmg Off");
-		draw.TextShadow(142, h - 430, guiGet("rbot.accuracy.weapon.sniper.mindmg"))
-		draw.Text(18, h - 413, "Scout MinDmg Off")
-		draw.TextShadow(142, h - 413, guiGet("rbot.accuracy.weapon.scout.mindmg"))
-        draw.Text(18, h - 396, "Auto MinDmg Off");		
-		draw.TextShadow(142, h - 396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
+    	draw.Text(18, h - 447, "Min Damage Mode: Untoggled");
+        
+		draw.Text(18, h - 396, "Auto MinDmg: Off");		
+		draw.TextShadow(142, h - 396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
+
+		draw.Text(18, h - 413, "Scout MinDmg: Off")
+		draw.TextShadow(142, h - 413, guiGet("rbot.accuracy.weapon.scout.mindmg"))		draw.Text(18, h - 430, "Awp MinDmg: Off");
+		draw.TextShadow(142, h - 430, guiGet("rbot.accuracy.weapon.sniper.mindmg"))
+
+
 
 
     end
 elseif (setDmg:GetValue()==2) then
     if input.IsButtonDown(togglekey:GetValue()) then
           draw.Color(0, 255, 0, 255);
-    draw.Text(18, h - 447, "Min Damage Mode: Lowered");
-        if awpCheck:GetValue() then
-        draw.Color(255, 255, 0, 255);
-        draw.Text(18, h - 430, "Awp MinDmg On");
-		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h-430, guiGet("rbot.accuracy.weapon.sniper.mindmg")) 
-        else
-        end
-        if scoutCheck:GetValue() then
-        draw.Color(255, 255, 0, 255);
-        draw.Text(18, h - 413, "Scout MinDmg On");
-		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h-413, guiGet("rbot.accuracy.weapon.scout.mindmg"))
-        else
-        end
-        if autoCheck:GetValue() then
+    draw.Text(18, h - 447, "Min Damage Mode: onHold");
+        
+	if awpCheck:GetValue() then
         draw.Color(255, 255, 0, 255);
         draw.Text(18, h - 396, "Auto MinDmg On");
 		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h-396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
-        else
-        end
-    else
-        draw.Color(255, 0, 0, 255);
-    	draw.Text(18, h - 447, "Min Damage Mode: Original");
-        draw.Color(255, 0, 0, 255);
-        draw.Text(18, h - 430, "Awp MinDmg Off");
+		draw.TextShadow(142, h-396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
+		else
+			end
+    if scoutCheck:GetValue() then
+        draw.Color(255, 255, 0, 255);
+        draw.Text(18, h - 413, "Scout MinDmg On");
 		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h - 430, guiGet("rbot.accuracy.weapon.sniper.mindmg"))
+		draw.TextShadow(142, h-413, guiGet("rbot.accuracy.weapon.scout.mindmg"))		else	
+			end
+    if autoCheck:GetValue() then
+        draw.Color(255, 255, 0, 255);
+        draw.Text(18, h - 430, "Awp MinDmg On");
+		draw.Color(0, 0, 175, 255);
+		draw.TextShadow(142, h-430, guiGet("rbot.accuracy.weapon.sniper.mindmg")) 
+		else
+			end
+		else
         draw.Color(255, 0, 0, 255);
-		draw.Text(18, h - 413, "Scout MinDmg Off")
+    	draw.Text(18, h - 447, "Min Damage Mode: Normal");
+        
+		draw.Color(255, 0, 0, 255);
+        draw.Text(18, h - 396, "Auto MinDmg: Off");		
 		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h - 413, guiGet("rbot.accuracy.weapon.scout.mindmg"))
-		draw.Color(255, 0, 0, 255);        
-		draw.Text(18, h - 396, "Auto MinDmg Off");		
+		draw.TextShadow(142, h - 396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
+		
+        draw.Color(255, 0, 0, 255);
+		draw.Text(18, h - 413, "Scout MinDmg: Off")
 		draw.Color(0, 0, 175, 255);
-		draw.TextShadow(142, h - 396, guiGet("rbot.accuracy.weapon.asniper.mindmg"))
-    end
-else
-draw.Color(255, 0, 0, 255);
-draw.Text(18, h - 447, "Min Damage Mode Off");
-end
-end
+		draw.TextShadow(142, h - 413, guiGet("rbot.accuracy.weapon.scout.mindmg"))		draw.Color(255, 0, 0, 255);
+        draw.Text(18, h - 430, "Awp MinDmg: Off");
+		draw.Color(0, 0, 175, 255);
+		draw.TextShadow(142, h - 430, guiGet("rbot.accuracy.weapon.sniper.mindmg"))
+
+			end
+		else
+
+		draw.Color(255, 0, 0, 255);
+		draw.Text(18, h - 447, "Min Damage Mode: Off");
+
+			end
+		end
+
 callbacks.Register("Draw", "Drawtext", Drawtext);
 callbacks.Register("Draw", "changeMinDamage", changeMinDamage);
