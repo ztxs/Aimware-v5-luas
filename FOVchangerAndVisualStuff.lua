@@ -15,10 +15,13 @@ local SLIDER_VIEWY = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewY", "Viewmodel 
 local SLIDER_VIEWZ = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewZ", "Viewmodel Offset Z", -1, -40, 40 )
 
 callbacks.Register( "Draw", function()
-    local a = 0
-    local player_local = entities.GetLocalPlayer();
-    local gWeapon = player_local:GetEntity("m_hActiveWeapon")
-    local zoomLevel = gWeapon:GetProp("m_zoomLevel")
+     if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then return end;	
+
+	
+	local a = 0
+    local local_player = entities.GetLocalPlayer();
+    local pWeapon = local_player:GetPropEntity("m_hActiveWeapon")
+	local zoomLevel = pWeapon:GetProp("m_zoomLevel")
     if zoomLevel == 1 then
         if SLIDER_ONE:GetValue() == 90 then
             a = -40
@@ -152,7 +155,7 @@ local TAB = gui.Tab(REF, "lua_transparent_on_scope_tab", "Transparent on scope")
 local BOX = gui.Groupbox(TAB, "Transparent on scope lua by atk3001", 15, 15, 605, 500)
 local SLIDER = gui.Slider(BOX, "lua_transparent_on_scope_slider", "Level of transparency", 5, 0, 255)
 local localchams = gui.Combobox(BOX, "lua_transparent_on_scope_set_localchams", "Select the local chams while scoped", "Use the already set one", "Flat", "Color", "Metallic", "Glow", "Textured", "invisible")
-local ****** chams while scoped", false)
+local switchghost = gui.Checkbox(BOX, "lua_transparent_on_scope_switchghost", "Turn off ghost chams while scoped", false)
 local switchoc = gui.Checkbox(BOX, "lua_transparent_on_scope_switchoc", "Turn off occluded chams while scoped", false)
 local switchol = gui.Checkbox(BOX, "lua_transparent_on_scope_switchol", "Turn off Overlay while scoped", false)
 
@@ -177,9 +180,11 @@ local localoccludedclr_r, localoccludedclr_g, localoccludedclr_b, localoccludedc
 local localoverlayclr_r, localoverlayclr_g, localoverlayclr_b, localoverlayclr_a 
 local localvisibleclr_r, localvisibleclr_g, localvisibleclr_b, localvisibleclr_a 
 
+local local_player = entities.GetLocalPlayer();
+
 callbacks.Register( "Draw", function()
-local player_local = entities.GetLocalPlayer();
-local scoped = player_local:GetProp("m_bIsScoped")
+local local_player = entities.GetLocalPlayer();
+local scoped = local_player:GetProp("m_bIsScoped")
 if scoped ~= 0 and scoped ~= 256 then
 
     if slidervalue ~= SLIDER:GetValue() then

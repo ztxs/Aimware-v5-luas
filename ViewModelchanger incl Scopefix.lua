@@ -1,3 +1,4 @@
+-- FOVnViewFovModel changer incl Scopefix --
 local visuals_menu = gui.Reference("VISUALS")	-- ("VISUALS", "OTHER", "Effects")
 
 local TAB = gui.Tab(visuals_menu, "lua_fov_tab", "Fov Changer")
@@ -14,10 +15,13 @@ local SLIDER_VIEWY = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewY", "Viewmodel 
 local SLIDER_VIEWZ = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewZ", "Viewmodel Offset Z", -1, -40, 40 )
 
 callbacks.Register( "Draw", function()
-    local a = 0
-    local player_local = entities.GetLocalPlayer();
-    local gWeapon = player_local:GetPropEntity("m_hActiveWeapon")
-    local zoomLevel = gWeapon:GetProp("m_zoomLevel")
+     if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then return end;	
+
+	
+	local a = 0
+    local local_player = entities.GetLocalPlayer();
+    local pWeapon = local_player:GetPropEntity("m_hActiveWeapon")
+	local zoomLevel = pWeapon:GetProp("m_zoomLevel")
     if zoomLevel == 1 then
         if SLIDER_ONE:GetValue() == 90 then
             a = -40
@@ -37,3 +41,5 @@ callbacks.Register( "Draw", function()
     client.SetConVar("viewmodel_offset_y", SLIDER_VIEWY:GetValue(), true);
     client.SetConVar("viewmodel_offset_z", SLIDER_VIEWZ:GetValue() - a, true);
 end)
+
+-- End FOVnViewFovModel changer incl Scopefix --

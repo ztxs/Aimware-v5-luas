@@ -17,7 +17,7 @@ w, h = draw.GetScreenSize()
 
  if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then
  return
-			
+	end		
 
 	else if (deadespwallhack:GetValue() ~= 0) then		
 		 if entities.GetLocalPlayer():IsAlive() == true and input.IsButtonDown(deadespwallhack:GetValue()) then
@@ -65,7 +65,7 @@ elseif entities.GetLocalPlayer():IsAlive() == true then
 end
 end			
 end
-end
+
 
 callbacks.Register( "Draw", "espalwaysondead", ESP_Always_OnDead );
 
