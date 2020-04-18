@@ -15,13 +15,14 @@ local SLIDER_VIEWY = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewY", "Viewmodel 
 local SLIDER_VIEWZ = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewZ", "Viewmodel Offset Z", -1, -40, 40 )
 
 callbacks.Register( "Draw", function()
-     if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then return end;	
-
-	
+if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then return end;	
 	local a = 0
     local local_player = entities.GetLocalPlayer();
-    local pWeapon = local_player:GetPropEntity("m_hActiveWeapon")
-	local zoomLevel = pWeapon:GetProp("m_zoomLevel")
+    
+	local scoped = local_player:GetProp("m_bIsScoped")
+    if scoped ~= 0 and scoped ~= 256 then
+	local gWeapon = local_player:GetPropEntity("m_hActiveWeapon")
+	local zoomLevel = gWeapon:GetProp("m_zoomLevel")
     if zoomLevel == 1 then
         if SLIDER_ONE:GetValue() == 90 then
             a = -40
@@ -32,6 +33,7 @@ callbacks.Register( "Draw", function()
             a = -40
         end
         client.SetConVar( "fov_cs_debug", SLIDER_TWO:GetValue(), true )
+		end
     else
         client.SetConVar( "fov_cs_debug", SLIDER:GetValue(), true )
     end
@@ -39,9 +41,9 @@ callbacks.Register( "Draw", function()
     client.SetConVar("viewmodel_fov", SLIDER_VIEW:GetValue(), true)
     client.SetConVar("viewmodel_offset_x", SLIDER_VIEWX:GetValue(), true);
     client.SetConVar("viewmodel_offset_y", SLIDER_VIEWY:GetValue(), true);
-    client.SetConVar("viewmodel_offset_z", SLIDER_VIEWZ:GetValue() - a, true);
-end)
-
+    client.SetConVar("viewmodel_offset_z", SLIDER_VIEWZ:GetValue() + a, true);
+	end)	
+	
 -- End FOVnViewFovModel changer incl Scopefix --
 
 local function noshadows()
