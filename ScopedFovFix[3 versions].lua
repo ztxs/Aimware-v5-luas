@@ -1,4 +1,4 @@
---[[local tp_state = {
+local tp_state = {
     level = {
         [1] = 40,
         [2] = 15
@@ -23,7 +23,7 @@ callbacks.Register("Draw", "scope_fix", function()
     local cam_dist = client.GetConVar(tp_state.convar_tp)
 	local m_bIsScoped = g_Local:GetProp("m_bIsScoped")
 	
-	if (esp.other.lua_custom_viewmodel_editor:GetValue() == 0) then return; end
+--	if (esp.other.lua_custom_viewmodel_editor:GetValue() == nil) then return; end
 
     if not (m_bIsScoped == 1 or m_bIsScoped == 257) and tp_dist > 0 then
         gui.SetValue("esp.local.thirdpersondist", cam_dist)
@@ -68,10 +68,9 @@ callbacks.Register("Draw", "scope_fix", function()
     end
 end)
 
---]]
 
---#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#
 
+--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#----#--#
 --[[
 local GetValue = gui.GetValue;
 local SetValue = gui.SetValue;
@@ -102,9 +101,7 @@ end
 callbacks.Register( "Draw", "ZoomFOV", ZoomFOV);
 --]]
 
---#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#
-
-
+--[[#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--#--
 
 local GetLocalPlayer, GetValue, SetValue = entities.GetLocalPlayer, gui.GetValue, gui.SetValue
 local enable = gui.Checkbox(gui.Reference('VISUALS', 'LOCAL', 'Helper'), 'vis_fixfov', 'Fix Scoped FOV', false)
@@ -138,3 +135,6 @@ callbacks.Register('Draw', 'Fov fix', function()
 		end
 	end
 end)
+
+
+--]]

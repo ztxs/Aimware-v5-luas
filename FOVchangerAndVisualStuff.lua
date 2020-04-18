@@ -1,26 +1,45 @@
+-- FOVnViewFovModel changer incl Scopefix --
 local visuals_menu = gui.Reference("VISUALS", "OTHER", "Effects")
-local visuals_custom_viewmodel_editor = gui.Checkbox( visuals_menu, "lua_custom_viewmodel_editor", "Custom Viewmodel Editor", 1 );
-local xO = client.GetConVar("viewmodel_offset_x");
-local yO = client.GetConVar("viewmodel_offset_y");
-local zO = client.GetConVar("viewmodel_offset_z");
-local fO = client.GetConVar("viewmodel_fov");
-local f1 = client.GetConVar("fov_cs_debug");
-local xS = gui.Slider(visuals_menu, "lua_x", "X", xO, -20, 20); 
-local yS = gui.Slider(visuals_menu, "lua_y", "Y", yO, -100, 100); 
-local zS = gui.Slider(visuals_menu, "lua_z", "Z", zO, -20, 20); 
-local vfov = gui.Slider(visuals_menu, "vfov", "Viewmodel FOV", fO, 0, 120);
-local fov = gui.Slider(visuals_menu, "fov", "View FOV", f1, 0, 120);
 
-local function Visuals_Viewmodel()
-   if visuals_custom_viewmodel_editor:GetValue() then
-client.SetConVar("viewmodel_offset_x", xS:GetValue(), true);
-client.SetConVar("viewmodel_offset_y", yS:GetValue(), true);
-client.SetConVar("viewmodel_offset_z", zS:GetValue(), true);
-client.SetConVar("viewmodel_fov", vfov:GetValue(), true);
-client.SetConVar("fov_cs_debug", fov:GetValue(), true);
-   end
-   end
+local TAB = gui.Tab(visuals_menu, "lua_fov_tab", "Fov Changer")
 
+local FOVBOX = gui.Groupbox(TAB, "FOV", 15, 15, 605, 500)
+local SLIDER = gui.Slider( FOVBOX, "lua_fov_slider", "Field of View", 90, 0, 180 )
+local SLIDER_ONE = gui.Slider( FOVBOX, "lua_fov_slider_one", "Field of View for 1st Zoom", 40, 0, 180 )
+local SLIDER_TWO = gui.Slider( FOVBOX, "lua_fov_slider_two", "Field of View for 2nd Zoom", 15, 0, 180 )
+
+local VIEWFOVBOX = gui.Groupbox(TAB, "Viewmodel", 15, 220, 605, 500)
+local SLIDER_VIEW = gui.Slider( VIEWFOVBOX, "lua_fov_slider_view", "Viewmodel Field of View", 64, 0, 180 )
+local SLIDER_VIEWX = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewX", "Viewmodel Offset X", 1, -40, 40 )
+local SLIDER_VIEWY = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewY", "Viewmodel Offset Y", 1, -40, 40 )
+local SLIDER_VIEWZ = gui.Slider( VIEWFOVBOX, "lua_fov_slider_viewZ", "Viewmodel Offset Z", -1, -40, 40 )
+
+callbacks.Register( "Draw", function()
+    local a = 0
+    local player_local = entities.GetLocalPlayer();
+    local gWeapon = player_local:GetPropEntity("m_hActiveWeapon")
+    local zoomLevel = gWeapon:GetProp("m_zoomLevel")
+    if zoomLevel == 1 then
+        if SLIDER_ONE:GetValue() == 90 then
+            a = -40
+        end
+        client.SetConVar( "fov_cs_debug", SLIDER_ONE:GetValue(), true )
+    elseif zoomLevel == 2 then
+        if SLIDER_TWO:GetValue() == 90 then
+            a = -40
+        end
+        client.SetConVar( "fov_cs_debug", SLIDER_TWO:GetValue(), true )
+    else
+        client.SetConVar( "fov_cs_debug", SLIDER:GetValue(), true )
+    end
+
+    client.SetConVar("viewmodel_fov", SLIDER_VIEW:GetValue(), true)
+    client.SetConVar("viewmodel_offset_x", SLIDER_VIEWX:GetValue(), true);
+    client.SetConVar("viewmodel_offset_y", SLIDER_VIEWY:GetValue(), true);
+    client.SetConVar("viewmodel_offset_z", SLIDER_VIEWZ:GetValue() - a, true);
+end)
+
+-- End FOVnViewFovModel changer incl Scopefix --
 
 local function noshadows()
     client.SetConVar( "r_shadows", 0, true );
@@ -45,8 +64,85 @@ noshadows()
 client.AllowListener("round_start")
 callbacks.Register ("FireGameEvent", event)
 callbacks.Register("Draw", "Custom Viewmodel Editor", Visuals_Viewmodel)
+callbacks.Register('Draw', 'noshadows', noshadows)
 
 -------------------------------------------------------------------------------------------------
+
+-- TranspirancyOnZoom ------------------>
+
+local TransparencyOnZoom = gui.Reference("VISUALS", "LOCAL", "Helper")
+local Enable_box = gui.Checkbox(TransparencyOnZoom, "enable_transparency_checkbox", "Enable TransparencyOnScope", 0)
+Enable_box:SetDescription("Enable Local ChamsTransparecy on Scope")
+
+local cache = {
+clr_local
+clr_local_hidden
+clr_ghost
+clr_ghost_hidden
+}
+
+local invoke_cache_callback = function()
+    if cache.clr_local ~= nil then
+        gui.SetValue("esp.chams.local.visible.clr", cache.clr_local[1], cache.clr_local[2], cache.clr_local[3], cache.clr_local[4])
+        cache.clr_local = nil
+    end
+	if cache.clr_local_hidden ~= nil then
+        gui.SetValue("esp.chams.local.visible.clr", cache.clr_local_hidden[1], cache.clr_local_hidden[2], cache.clr_local_hidden[3], cache.clr_local_hidden[4])
+        cache.clr_local_hidden = nil
+    end
+	if cache.clr_ghost ~= nil then
+        gui.SetValue("esp.chams.ghost.visible.clr", cache.clr_ghost[1], cache.clr_ghost[2], cache.clr_ghost[3], cache.clr_ghost[4])
+        cache.clr_ghost = nil
+    end
+	if cache.clr_ghost_hidden ~= nil then
+        gui.SetValue("esp.chams.ghost.visible.clr", cache.clr_ghost_hidden[1], cache.clr_ghost_hidden[2], cache.clr_ghost_hidden[3], cache.clr_ghost_hidden[4])
+        cache.clr_ghost_hidden = nil
+    end
+end
+
+callbacks.Register("Draw", "scope_trpn", function()
+    local me = entities.GetLocalPlayer()
+
+    if me == nil or not me:IsAlive() or Enable_box:GetValue() == nil then
+        invoke_cache_callback()
+        return
+    end
+
+    local m_bIsScoped = me:GetProp("m_bIsScoped")
+    local m_iTeamNum = me:GetProp("m_iTeamNum") -- T: 2 CT: 3
+
+    if cache.clr_local == nil then cache.clr_local = { gui.GetValue("esp.chams.local.visible.clr") } end
+	if cache.clr_local_hidden == nil then cache.clr_local_hidden = { gui.GetValue("esp.chams.local.occluded.clr") } end
+    if cache.clr_ghost == nil then cache.clr_ghost = { gui.GetValue("esp.chams.ghost.visible.clr") } end
+	if cache.clr_ghost_hidden == nil then cache.clr_ghost_hidden = { gui.GetValue("esp.chams.ghost.occluded.clr") } end
+
+    print(cache.clr_local)
+    print(cache.clr_local_hidden)
+    print(cache.clr_ghost)    
+	print(cache.clr_ghost_hidden)
+	
+	
+    if m_bIsScoped == 1 or m_bIsScoped == 257 then
+
+        if m_iTeamNum == 2 then gui.SetValue("esp.chams.local.visible.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 2 then gui.SetValue("esp.chams.local.occluded.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 2 then gui.SetValue("esp.chams.ghost.visible.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 2 then gui.SetValue("esp.chams.ghost.occluded.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 3 then gui.SetValue("esp.chams.local.visible.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 3 then gui.SetValue("esp.chams.local.occluded.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 3 then gui.SetValue("esp.chams.ghost.visible.clr", 90, 90, 90, 32) end
+        if m_iTeamNum == 3 then gui.SetValue("esp.chams.ghost.occluded.clr", 90, 90, 90, 32) end
+    else
+        invoke_cache_callback()
+    end
+end)
+
+-- END TranspirancyOnZoom ------------------>
+
+
+
+-------------------------------------------------------------------------------------------------
+
 
 --------------------
 -- ui setup
@@ -356,11 +452,12 @@ local function eventz(e)
         noshadows()
     end       
 end
-
 --noshadows()
 
 client.AllowListener("round_start")
 callbacks.Register ("FireGameEvent", eventz)
+callbacks.Register('Draw', 'noshadows', noshadows)
+
 -- END WorldShadows FPSboost ------------------
 
 

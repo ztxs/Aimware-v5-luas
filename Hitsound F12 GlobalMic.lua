@@ -4,7 +4,7 @@ local f12killsound = gui.Checkbox(menu, "killsound", "F12 Kill Sound", 0)
 local currentTime = 0
 local timer = 0
 local enabled = true
-local snd_time = 2,512-- set sound file length default f12 sound = 1.100 .
+local snd_time = 2,500-- set sound file length default f12 sound = 1.100 .
 local fl_val, flp_val = nil, nil
 
 f12killsound:SetDescription("Plays F12 sound when you kill someone")

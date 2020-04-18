@@ -4,7 +4,7 @@
 local legitbotRef = gui.Reference( "Legitbot", "Semirage", "Anti-Aim" );
 local indicatorCheckBox = gui.Checkbox( legitbotRef, ".indicator.checkbox", "Draw Anti-Aim Indicator", false );
 local indicatorComboBox = gui.Combobox( legitbotRef, ".indicator.combobox", "Indicator Combobox", "Fake", "Real" );
-local indicatorColorPicker = gui.ColorPicker( legitbotRef, ".indicator.color", "Anti-Aim Indicator Color", 200, 25, 25, 200 );
+local indicatorColorPicker = gui.ColorPicker( legitbotRef, "aim.indicator.color", "Anti-Aim Indicator Color", 200, 25, 25, 200 );
 local indicatorScaleSlider = gui.Slider( legitbotRef, ".indicator.scale", "Indicator Scale", 1, 1, 5, 0.5 );
 local indicatorGapSlider = gui.Slider( legitbotRef, ".indicator.gap", "Indicator Gap", 60, 10, 150, 10 );
 
@@ -22,7 +22,7 @@ local font = draw.CreateFont( "Tahoma", 20 );
 
 local function drawIndicators()
     if indicatorCheckBox:GetValue() then
-        
+       
         local screenW, screenH = draw.GetScreenSize();
         local screenWCenter = screenW * 0.5;
         local screenHCenter = screenH * 0.5;
@@ -65,7 +65,7 @@ local function drawIndicators()
                 draw.Color(indicatorColorPicker:GetValue());
                 draw.Triangle( screenWCenter - indicatorGap - (15 * indicatorScale), screenHCenter, screenWCenter - indicatorGap, screenHCenter - (10 * indicatorScale), screenWCenter - indicatorGap, screenHCenter + (10 * indicatorScale) );
             end
-    
+   
             if (isRight or input.IsButtonPressed( rightKey )) then -- draw right indicator
                 isRight = true;
                 isLeft = false;
