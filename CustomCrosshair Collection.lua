@@ -4,6 +4,7 @@ local VISUALz = gui.Reference('VISUALS', 'Other', 'Extra')
 local visualtabmisc = gui.Text(VISUALz, "Choose a Custom Crosshair")
 local basicbitch_crosshair = gui.Checkbox( VISUALz, "msc_basicbitch", "Black n White MiniCrosshair", 0)
 function basicbitchxhair()
+if not basicbitch_crosshair:GetValue() then return end;
         if entities.GetLocalPlayer() == nil then end;
     if basicbitch_crosshair:GetValue() then
         local screencenter2X, screencenter2Y = draw.GetScreenSize() --getting the full screensize
@@ -26,6 +27,8 @@ local swastikkka_crosshair = gui.Checkbox( VISUALz2, "msc_swastikkka", "88´er R
 local swastikkka_crosshairslidesize = gui.Slider(VISUALz2, "msc_swasisize", "SwastiSize", 15.0, 1, 100.0)
 local swastikkka_crosshairsliderspeed = gui.Slider(VISUALz2, "msc_swasispeed", "SwastiSpeed", 1.0, -10.0, 10.0)
 local function rainbowxhair()
+if not swastikkka_crosshair:GetValue() then return end;
+
     if swastikkka_crosshair:GetValue() then
     local r = math.floor(math.sin(globals.RealTime() * swastikkka_crosshairsliderspeed:GetValue()) * 127 + 128)
     local g = math.floor(math.sin(globals.RealTime() * swastikkka_crosshairsliderspeed:GetValue() + 2) * 127 + 128)
