@@ -8,11 +8,11 @@ LuaScripts which work like Extensions for Aimware´s CSGO v5 Cheat
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 
-Luas with multiple [X versions] means you can edit the script and choose the way of coding it should use.
+Luas with multiple versions [X versions] means you can edit the script and choose the code it should use.
 
 Just change the positions of "--[[" and "]]--". Just put the "--[[" infront of a scriptcode and the "]]--" 
 
-behind the scriptcode to "disable" it and vica versa delete them to "activate" code. 
+behind the scriptcode to "disable" it and vica versa, delete them to "enable" code. 
 
 (highly recommend notepad++ or vs code for editing)
 
