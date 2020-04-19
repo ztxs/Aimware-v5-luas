@@ -432,7 +432,7 @@ function drawSideHUD()
 	end
 end
 
-function drawCrosshair()
+local function drawCrosshair()
 	local crosshairStyle = onion_crosshair_style:GetValue()
 
 	if (localPlayer == nil or onion_crosshair_enabled:GetValue() == false) then
