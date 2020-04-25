@@ -80,4 +80,4 @@ local function createMoveHook(cmd)
     end
 end
 
-callbacks.Register("CreateMove", createMoveHook)
+callbacks.Register("CreateMove", createMoveHook)

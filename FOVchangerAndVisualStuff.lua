@@ -192,8 +192,7 @@ if entities.GetLocalPlayer() == NULL or entities.GetLocalPlayer() == nil then re
 local player_local = entities.GetLocalPlayer();
 local zoomed = player_local:GetProp("m_bIsScoped")
 draw.Text(100 , 100,"Scoped: " .. tostring(zoomed))
-if zoomed ~= 0 then
-
+if zoomed == 1 then
     if slidervalue ~= SLIDER:GetValue() then
         change = 1
     end

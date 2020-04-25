@@ -25,6 +25,7 @@ client_console_cmd("cl_crosshairstyle 4")
 client_console_cmd("cl_crosshairthickness 100000")
 client_console_cmd("cl_crosshairusealpha 1")
 client_console_cmd("cl_fixedcrosshairgap -10")
+client_console_cmd("play commander/train_bodydamageheadshot_04.wav, true")
 end
 
 local function normalcrosshair()
@@ -51,6 +52,7 @@ client_console_cmd("cl_crosshairstyle 4")
 client_console_cmd("cl_crosshairthickness 0.5")
 client_console_cmd("cl_crosshairusealpha 0")
 client_console_cmd("cl_fixedcrosshairgap 3")
+client_console_cmd("play commander/train_bodydamageheadshot_04.wav, true")
 end
 
 

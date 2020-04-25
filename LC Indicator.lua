@@ -13,6 +13,12 @@ text = draw.TextShadow
 local originRecords = {}
 local font = createFont("Verdana", 20, 1000)
 
+local function ReCheckEvent(Event)
+
+if Event:GetName() ~= "round_start" then return end
+
+end
+
 local function drawHook()
 
     setFont(font)
@@ -51,5 +57,6 @@ local function createMoveHook(cmd)
     end
 end
 
+client.AllowListener("round_start")
 callbacks.Register("Draw", drawHook)
 callbacks.Register("CreateMove", createMoveHook)
